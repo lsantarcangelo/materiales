@@ -25,14 +25,25 @@ const controller = {
 	
 	// Create -  Method to store
 	store: (req, res) => {
+
+		let img;
+
+		if (req.files.length > 0) {
+			img = req.files[0].filename
+		} else {
+			img = 'default-image.png'
+		};
+
 		let newProduct = {
 			"id": products[products.length -1].id + 1,
 			"name": req.body.name,
 			"price": req.body.price,
 			"discount": req.body.discount,
 			"category": req.body.category,
-			"description": req.body.description
+			"description": req.body.description,
+			"image": img
 		};
+
 		products.push(newProduct);
 		fs.writeFileSync(productsFilePath, JSON.stringify(products, null, ''));
 		res.redirect('/');
